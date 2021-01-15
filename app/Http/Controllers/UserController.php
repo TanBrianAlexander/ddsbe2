@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Traits\ApiResponser;  
 use Illuminate\Http\Request;  
 use DB; 
+use App\Models\UserJob;
 
 
 Class UserController extends Controller {
@@ -30,9 +31,14 @@ Class UserController extends Controller {
         $rules = [
             'username' => 'required|max:20',
             'password' => 'required|max:20',
+            'job_id' => 'required|numeric|min:1|not_in:0',
         ];
 
         $this->validate($request,$rules);
+
+        $use = User::findOrFail($id);
+
+        $userjob = UserJob::findOrFail($request->job_id);
 
         $user = User::create($request->all());
 
